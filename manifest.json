@@ -9,11 +9,11 @@
   },
   "content_scripts": [
     {
-      "js": ["src/content.tsx"],
+      "js": ["src/content.js"],
       "matches": ["*://*.youtube.com/*"]
     }
   ],
   "background": {
-    "service_worker": "src/background.tsx"
+    "service_worker": "src/background.ts"
   }
 }
