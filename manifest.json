@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "YouTube videos Downloader",
+    "version": "1.0.0",
+    "description": "Download YouTube videos with a click!",
+    "permissions": [
+        "downloads",
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "index.html"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "src/content.tsx"
+            ],
+            "matches": [
+                "*://*.youtube.com/*"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "src/background.tsx"
+    }
+}
