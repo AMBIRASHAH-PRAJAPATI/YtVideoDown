@@ -1,11 +1,13 @@
 <script lang="ts" module>
- import { getVideoIdFromUrl, fetchVideoDetails, downloadVideo, type VideoDetails } from '../api/youtube';
- import Popup from './Popup.svelte';
+import { getVideoIdFromUrl, fetchVideoDetails, downloadVideo, type VideoDetails } from '../youtubedownloader';
+  import PopupModal from './PopupModal.svelte';
+  import { Button } from 'flowbite-svelte';
+  import DownloadOutline from 'flowbite-svelte-icons/DownloadOutline.svelte';
 </script>
 <script lang="ts">
   
     let showModal = $state(false);
-    let videoDetails =  $state<VideoDetails | null>(null);
+    let videoDetails =  $state<Promise<VideoDetails | null> | null>(null);
     let videoId: string | null = null;
   
     async function openModal() {
@@ -37,10 +39,10 @@
     }
   </script>
   
-  <button onclick={openModal} class="fixed left-4 top-1/2 -translate-y-1/2 z-50 bg-red-600 text-white p-2 rounded-md shadow-md hover:bg-red-700 transition">
-    <!-- Download icon from librery from npm -->
-  </button>
-  
+  <Button onclick={openModal} class="fixed left-4 top-1/2 -translate-y-1/2 z-50 p-2 rounded-md shadow-md" color="red">
+    <DownloadOutline class="w-6 h-6" />
+  </Button>
+    
   {#if showModal}
-    <Popup  videoDetails  closeModal handleDownload/>
+    <PopupModal videoDetails={videoDetails} closeModal={closeModal} handleDownload={handleDownload}/>
   {/if}
