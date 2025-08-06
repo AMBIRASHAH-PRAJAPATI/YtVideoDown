@@ -6,10 +6,9 @@
 
 
 <!-- this will contains the download btn and on clicking it it will open a modal popup.svelte with css as root -->
-
-<dialog id="yt-download-modal" >
-
-</dialog>
+<button>
+    <!-- download icon from any librery -->
+</button>
 <style>
 
 </style>
