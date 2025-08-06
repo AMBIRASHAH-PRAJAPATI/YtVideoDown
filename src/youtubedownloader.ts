@@ -1,5 +1,5 @@
+/// <reference types="chrome" />
 import * as ytdl from "ytdl-core";
-import { createWriteStream } from "fs";
 
 export type VideoDetails = {
   title: string;
@@ -16,11 +16,13 @@ export async function fetchVideoDetails(
 ): Promise<VideoDetails | null> {
   try {
     const info = await ytdl.getInfo(videoId);
+    const qualities = info.formats
+      .filter((format) => format.qualityLabel)
+      .map((format) => format.qualityLabel!)
+      .filter((value, index, self) => self.indexOf(value) === index);
     const videoDetails = {
       title: info.videoDetails.title,
-      qualities: info.formats
-        .map((format) => format.qualityLabel)
-        .filter(Boolean) as string[],
+      qualities: qualities as string[],
     };
     return videoDetails;
   } catch (error) {
@@ -30,9 +32,9 @@ export async function fetchVideoDetails(
 }
 
 export function downloadVideo(videoId: string, quality: string) {
-  const url = `https://www.youtube.com/watch?v=${videoId}`;
-  const video = ytdl(url, { quality: quality });
-
-  // Example of saving to a file. In a browser extension, you would use the downloads API.
-  video.pipe(createWriteStream("video.mp4"));
+  chrome.runtime.sendMessage({
+    action: "downloadVideo",
+    videoId: videoId,
+    quality: quality,
+  });
 }
